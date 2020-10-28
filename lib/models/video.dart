@@ -10,6 +10,10 @@ class Video {
     return this.toMap().toString();
   }
 
+  Map<String, dynamic> toJson() {
+    return toMap();
+  }
+
   Map toMap() {
     return {
       'id': id,
@@ -20,6 +24,23 @@ class Video {
   }
 
   factory Video.fromJson(Map<String, dynamic> data) {
+    if (data.containsKey('snippet')) {
+      return Video.fromGoogleJson(data);
+    }
+
+    return Video.fromSelfJson(data);
+  }
+
+  factory Video.fromSelfJson(Map<String, dynamic> data) {
+    return Video(
+      id: data['id'],
+      title: data['title'],
+      thumb: data['thumb'],
+      channel: data['channel'],
+    );
+  }
+
+  factory Video.fromGoogleJson(Map<String, dynamic> data) {
     return Video(
       id: data['id']['videoId'],
       title: data['snippet']['title'],

@@ -37,7 +37,7 @@ dependencies:
   flutter_slidable: ^0.5.7
   flutter_youtube: ^1.1.4
   http: ^0.12.2
-  shared_preferences: ^0.4.3
+  shared_preferences: ^0.5.12+2
   rxdart: ^0.20.0
   bloc_pattern: ^1.3.0
 

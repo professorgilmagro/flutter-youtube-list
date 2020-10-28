@@ -1,5 +1,7 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ytf_app/blocs/favorite_bloc.dart';
 import 'package:ytf_app/models/video.dart';
 
 class VideoTile extends StatelessWidget {
@@ -9,6 +11,7 @@ class VideoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final favBloc = BlocProvider.of<FavoriteBloc>(context);
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4),
       child: Column(
@@ -51,14 +54,25 @@ class VideoTile extends StatelessWidget {
                   ],
                 ),
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.star_border,
-                  color: Colors.white,
-                  size: 30,
-                ),
-                onPressed: () {},
-              )
+              StreamBuilder<Map<String, Video>>(
+                  stream: favBloc.outFav,
+                  initialData: {},
+                  builder: (context, snapshot) {
+                    return snapshot.hasData
+                        ? IconButton(
+                            icon: Icon(
+                              snapshot.data.containsKey(video.id)
+                                  ? Icons.star
+                                  : Icons.star_border,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                            onPressed: () {
+                              favBloc.toggleFavorite(video);
+                            },
+                          )
+                        : CircularProgressIndicator();
+                  }),
             ],
           )
         ],
