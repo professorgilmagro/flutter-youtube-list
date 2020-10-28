@@ -1,8 +1,9 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_youtube/flutter_youtube.dart';
 import 'package:ytf_app/blocs/favorite_bloc.dart';
 import 'package:ytf_app/models/video.dart';
+import 'package:ytf_app/services/api.dart';
 
 class Favorites extends StatelessWidget {
   @override
@@ -22,7 +23,14 @@ class Favorites extends StatelessWidget {
             padding: EdgeInsets.all(10),
             children: snapshot.data.values.map((video) {
               return InkWell(
-                onTap: () {},
+                onTap: () {
+                  FlutterYoutube.playYoutubeVideoById(
+                    autoPlay: true,
+                    appBarColor: Colors.black87,
+                    apiKey: Api.KEY,
+                    videoId: video.id,
+                  );
+                },
                 onLongPress: () {
                   favBloc.toggleFavorite(video);
                 },

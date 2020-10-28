@@ -5,7 +5,7 @@ import 'package:ytf_app/models/video.dart';
 import 'package:ytf_app/services/api.dart';
 
 class VideoBloc implements BlocBase {
-  List<Video> videos = List();
+  List<Video> videos = [];
   static const NEXT_PAGE_ACTION = 'smZ@&H0nj4:m%9q';
   final _videoController = StreamController<List<Video>>();
   final _searchController = StreamController<String>();

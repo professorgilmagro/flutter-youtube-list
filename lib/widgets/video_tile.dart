@@ -1,8 +1,10 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_youtube/flutter_youtube.dart';
 import 'package:ytf_app/blocs/favorite_bloc.dart';
 import 'package:ytf_app/models/video.dart';
+import 'package:ytf_app/services/api.dart';
 
 class VideoTile extends StatelessWidget {
   final Video video;
@@ -19,9 +21,21 @@ class VideoTile extends StatelessWidget {
         children: [
           AspectRatio(
             aspectRatio: 16 / 9,
-            child: Image.network(
-              video.thumb,
-              fit: BoxFit.cover,
+            child: InkWell(
+              onTap: () {
+                FlutterYoutube.playYoutubeVideoById(
+                  backgroundColor: Colors.black87,
+                  appBarColor: Colors.black87,
+                  autoPlay: true,
+                  fullScreen: true,
+                  apiKey: Api.KEY,
+                  videoId: video.id,
+                );
+              },
+              child: Image.network(
+                video.thumb,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           Row(
