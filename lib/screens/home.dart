@@ -42,6 +42,7 @@ class Home extends StatelessWidget {
       ),
       body: StreamBuilder(
         stream: blocVideo.outVideos,
+        initialData: [],
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Container();
@@ -55,10 +56,15 @@ class Home extends StatelessWidget {
                   video: snapshot.data[index],
                 );
               }
-              blocVideo.nextPage();
-              return Center(
-                child: CircularProgressIndicator(),
-              );
+
+              if (index > 1) {
+                blocVideo.nextPage();
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              return Container();
             },
           );
         },

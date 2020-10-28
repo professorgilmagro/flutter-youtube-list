@@ -35,7 +35,7 @@ class Api {
   }
 
   String getSearchUrl(String term, bool nextPage) {
-    if (term != null && term.isNotEmpty) _lastSearch = term;
+    if (!nextPage) _lastSearch = term;
     String q = (nextPage && _lastSearch != null) ? _lastSearch : term;
     String qs = 'key=$KEY&part=snippet&q=$q&type=video&maxResults=$MAX';
     if (nextPage) {
