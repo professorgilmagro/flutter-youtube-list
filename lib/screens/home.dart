@@ -55,7 +55,7 @@ class Home extends StatelessWidget {
                   video: snapshot.data[index],
                 );
               }
-              blocVideo.inSearch.add(null);
+              blocVideo.nextPage();
               return Center(
                 child: CircularProgressIndicator(),
               );

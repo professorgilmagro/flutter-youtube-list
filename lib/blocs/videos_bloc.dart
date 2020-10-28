@@ -5,8 +5,8 @@ import 'package:ytf_app/models/video.dart';
 import 'package:ytf_app/services/api.dart';
 
 class VideoBloc implements BlocBase {
-  Api api;
-  List<Video> videos;
+  List<Video> videos = List();
+  static const NEXT_PAGE_ACTION = 'smZ@&H0nj4:m%9q';
   final _videoController = StreamController<List<Video>>();
   final _searchController = StreamController<String>();
 
@@ -15,16 +15,18 @@ class VideoBloc implements BlocBase {
   Sink get inSearch => _searchController.sink;
 
   VideoBloc() {
-    api = Api();
     _searchController.stream.listen(_search);
   }
 
   void _search(String search) async {
-    final goToNextPage = search == null;
-    if (goToNextPage || videos == null) videos = List();
+    final goToNextPage = search == NEXT_PAGE_ACTION;
 
-    videos += await api.search(search, nextPage: goToNextPage);
+    videos += await Api.search(search, nextPage: goToNextPage);
     _videoController.sink.add(videos);
+  }
+
+  void nextPage() {
+    inSearch.add(NEXT_PAGE_ACTION);
   }
 
   @override

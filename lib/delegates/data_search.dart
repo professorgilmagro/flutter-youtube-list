@@ -65,7 +65,7 @@ class DataSearch extends SearchDelegate<String> {
   }
 
   Future<List> suggestions(String search) async {
-    final List data = await Api().getSuggestData(search);
+    final List data = await Api.instance.getSuggestData(search);
     return data[1].map((item) {
       return item[0];
     }).toList();

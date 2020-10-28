@@ -1,29 +1,42 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ytf_app/models/video.dart';
 
 class Api {
+  static final _instance = Api._internal();
   static const MAX = 10;
-  static const KEY = 'AIzaSyDcyWrLu6XgnzZaAPIBlG_TOD4DZFbn3SA';
+  static const NEXT_PAGE = 'next';
+  static const KEY = 'AIzaSyDXdJIp5AXIpfu7GqMZMze_jrLxJJspzDY';
   static const BASE_SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search';
   static const BASE_SUGGEST_URL =
       'http://suggestqueries.google.com/complete/search';
 
   String _nextPageToken;
-  String _term;
+  String _lastSearch;
 
-  Future<List<Video>> search(String term, {@required bool nextPage}) async {
-    final content = await Api().getSearchData(term, nextPage: false);
+  static Api get instance {
+    return _instance;
+  }
+
+  Api._internal();
+
+  String get lastSearch {
+    return _lastSearch;
+  }
+
+  static Future<List<Video>> search(String term,
+      {@required bool nextPage}) async {
+    final content = await instance.getSearchData(term, nextPage: nextPage);
     return content['items'].map<Video>((data) {
       return Video.fromJson(data);
     }).toList();
   }
 
   String getSearchUrl(String term, bool nextPage) {
-    if (term != null) _term = term;
-    String q = (nextPage && _term != null) ? _term : term;
+    if (term != null && term.isNotEmpty) _lastSearch = term;
+    String q = (nextPage && _lastSearch != null) ? _lastSearch : term;
     String qs = 'key=$KEY&part=snippet&q=$q&type=video&maxResults=$MAX';
     if (nextPage) {
       qs += '&pageToken=$_nextPageToken';
@@ -50,7 +63,6 @@ class Api {
       return json.decode(response.body);
     }
 
-    print(url);
     throw Exception('Failed to load videos');
   }
 }
